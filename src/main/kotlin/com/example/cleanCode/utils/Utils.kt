@@ -22,7 +22,7 @@ class Utils {
 
         fun extractContentBetweenLines(filePath: String, firstLineIndex: Int, lastLineIndex: Int, e:AnActionEvent): List<String> {
             // Lire le fichier dans une liste de lignes
-
+            Messages.showMessageDialog(e.project, "entrer fonction extract", "Test", Messages.getInformationIcon())
             val lines = EditFileUtils.getFileContentAsList(filePath)
 
             // Vérifie si les index sont valides
@@ -37,7 +37,14 @@ class Utils {
             if (actualEndIndex < firstLineIndex || actualEndIndex > lines.size) {
                 throw IllegalArgumentException("L'index de fin est en dehors de la plage des lignes.")
             }
-            Messages.showMessageDialog(e.project, lines.subList(firstLineIndex, actualEndIndex).toString(), "Test", Messages.getInformationIcon())
+            try {
+                Messages.showMessageDialog(e.project, "affichage de lines", "Test", Messages.getInformationIcon())
+                Messages.showMessageDialog(e.project, lines.toString(), "Test", Messages.getInformationIcon())
+                Messages.showMessageDialog(e.project, lines.subList(firstLineIndex, actualEndIndex).toString(), "Test", Messages.getInformationIcon())
+            } catch (a: Exception) {
+                Messages.showMessageDialog(e.project, a.message.toString(), "Test", Messages.getInformationIcon())
+            }
+
             // Retourne les lignes entre startIndex et actualEndIndex
             return lines.subList(firstLineIndex, actualEndIndex)
         }
