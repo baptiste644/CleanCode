@@ -22,7 +22,6 @@ class Utils {
 
         fun extractContentBetweenLines(filePath: String, firstLineIndex: Int, lastLineIndex: Int, e:AnActionEvent): List<String> {
             // Lire le fichier dans une liste de lignes
-            Messages.showMessageDialog(e.project, "entrer fonction extract", "Test", Messages.getInformationIcon())
             val lines = EditFileUtils.getFileContentAsList(filePath)
 
             // Vérifie si les index sont valides
@@ -61,12 +60,8 @@ class Utils {
         fun getContentBetweenLines(path: String, firstRegexMatch: String, secondRegexMatch: String, e: AnActionEvent): Triple<List<String>, Int, Int> {
             val content = EditFileUtils.getFileContentAsList(path)
             val indexStart = getLineIndex(content, firstRegexMatch)
-            Messages.showMessageDialog(e.project, "indexStart" + indexStart.toString(), "Test", Messages.getInformationIcon())
             val contentAfter = extractContentBetweenLines(path, indexStart, -1, e)
-            Messages.showMessageDialog(e.project, "contentAfter" + contentAfter.toString(), "Test", Messages.getInformationIcon())
             val indexEnd = getLineIndex(contentAfter, secondRegexMatch) + indexStart - 1
-            Messages.showMessageDialog(e.project, indexEnd.toString(), "Test", Messages.getInformationIcon())
-            Messages.showMessageDialog(e.project, "variable de getContentBetweenLine" + indexStart+ indexEnd.toString(), "Test", Messages.getInformationIcon())
             return Triple(extractContentBetweenLines(path, indexStart, indexEnd, e), indexStart, indexEnd)
         }
 
