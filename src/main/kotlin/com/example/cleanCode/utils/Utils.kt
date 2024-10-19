@@ -1,6 +1,7 @@
 package com.example.cleanCode.utils
 
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.ui.Messages
 
 class Utils {
     companion object {
@@ -55,10 +56,12 @@ class Utils {
             return list
         }
 
-        fun getContentBetweenLines(path: String, firstRegexMatch: String, secondRegexMatch: String): Triple<String, Int, Int> {
+        fun getContentBetweenLines(path: String, firstRegexMatch: String, secondRegexMatch: String, e: AnActionEvent): Triple<String, Int, Int> {
             val content = EditFileUtils.getFileContent(path)
             val indexStart = getLineIndex(content, firstRegexMatch)
+            Messages.showMessageDialog(e.project, indexStart.toString(), "Test", Messages.getInformationIcon())
             val contentAfter = extractContentBetweenLines(path, indexStart, -1)
+            Messages.showMessageDialog(e.project, contentAfter, "Test", Messages.getInformationIcon())
             val indexEnd = getLineIndex(contentAfter, secondRegexMatch) + indexStart
 
             return Triple(extractContentBetweenLines(path, indexStart, indexEnd), indexStart, indexEnd)

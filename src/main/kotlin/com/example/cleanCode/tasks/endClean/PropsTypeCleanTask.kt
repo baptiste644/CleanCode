@@ -4,21 +4,23 @@ import com.example.cleanCode.constants.Dico
 import com.example.cleanCode.utils.EditFileUtils
 import com.example.cleanCode.utils.Utils
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 
 class PropsTypeCleanTask {
     fun PropsTypeCleanTask(e: AnActionEvent) {
         val path = EditFileUtils.getCurrentFilePath(e)
         val matchLocalizedFragment = Dico.regex.matchLocalizedFragmentPart1 + Utils.getTri(e) + Dico.regex.matchLocalizedFragmentPart2
-        val (contentBetweenLines, _, _) = Utils.getContentBetweenLines(path, matchLocalizedFragment, Dico.regex.matchArrow)
+        Messages.showMessageDialog(e.project, matchLocalizedFragment, "Test", Messages.getInformationIcon())
+        val (contentBetweenLines, _, _) = Utils.getContentBetweenLines(path, matchLocalizedFragment, Dico.regex.matchArrow, e)
 
         val listOfProps = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines).split(","))
-
-        cleanByDeletingForDefaultOrType(e, path, Dico.regex.matchPropsType, Dico.regex.matchBracket, listOfProps)
+        Messages.showMessageDialog(e.project, listOfProps.toString(), "Test", Messages.getInformationIcon())
+        cleanByDeletingForDefaultOrType(e, path, Dico.regex.matchPropsType, Dico.regex.matchBracket, listOfProps, e)
     }
 
-    private fun cleanByDeletingForDefaultOrType(event: AnActionEvent, path: String, firstRegexMatch: String, secondRegexMatch: String, listOfProps: List<String>) {
-        val (contentBetweenLines, indexStart, indexEnd) = Utils.getContentBetweenLines(path, firstRegexMatch, secondRegexMatch)
+    private fun cleanByDeletingForDefaultOrType(event: AnActionEvent, path: String, firstRegexMatch: String, secondRegexMatch: String, listOfProps: List<String>, e: AnActionEvent) {
+        val (contentBetweenLines, indexStart, indexEnd) = Utils.getContentBetweenLines(path, firstRegexMatch, secondRegexMatch, e)
 
         val listOfPropsToCheck = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines).split(","))
         val listOfPropsToCheckClean = listOfPropsToCheck.map { it.substringBefore(':') }
