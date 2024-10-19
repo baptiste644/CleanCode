@@ -5,7 +5,7 @@ class Dico {
     object regex {
         const val matchAnyString = "(.|\\n)*"
         const val matchLocalizedFragmentPart1 = "LocalizedFragment\\("
-        const val matchLocalizedFragmentPart2 = "Dico\\)\\(\\{"
+        const val matchLocalizedFragmentPart2 = "Dico\\)\\(\\(\\{"
         const val matchArrow = "}\\) => "
         const val matchPropsType = ".propTypes = \\{"
         const val matchDefaultProps = ".defaultProps = \\{"
