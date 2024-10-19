@@ -28,6 +28,7 @@ class Utils {
 
         fun extractContentBetweenLines(filePath: String, firstLineIndex: Int, lastLineIndex: Int, e:AnActionEvent): String {
             // Lire le fichier dans une liste de lignes
+
             val lines = EditFileUtils.getFileContentAsList(filePath)
             Messages.showMessageDialog(e.project, "firstLineIndex" + firstLineIndex.toString(), "Test", Messages.getInformationIcon())
             Messages.showMessageDialog(e.project, "lastLineIndex" + lastLineIndex.toString(), "Test", Messages.getInformationIcon())
@@ -42,8 +43,8 @@ class Utils {
 
             if (lastLineIndex == -1) {
                 Messages.showMessageDialog(e.project, "return si lastIndex == -1", "Test", Messages.getInformationIcon())
-                Messages.showMessageDialog(e.project, (lines.subList(firstLineIndex, lines.size).joinToString("\n")), "Test", Messages.getInformationIcon())
-                return lines.subList(firstLineIndex, lines.size).joinToString("\n")
+                Messages.showMessageDialog(e.project, (lines.subList(firstLineIndex, lines.size-1).joinToString("\n")), "Test", Messages.getInformationIcon())
+                return lines.subList(firstLineIndex, lines.size-1).joinToString("\n")
             }
             // Extraire les lignes entre firstLineIndex + 1 et lastLineIndex - 1
             Messages.showMessageDialog(e.project, "return ", "Test", Messages.getInformationIcon())
