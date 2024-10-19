@@ -13,8 +13,9 @@ class PropsTypeCleanTask {
         val path = EditFileUtils.getCurrentFilePath(e)
         val matchLocalizedFragment = Dico.regex.matchLocalizedFragmentPart1 + Utils.getTri(e) + Dico.regex.matchLocalizedFragmentPart2
         val (contentBetweenLines, _, _) = Utils.getContentBetweenLines(path, matchLocalizedFragment, Dico.regex.matchArrow, e)
-
+        Messages.showMessageDialog(e.project, "contentBetweenLines16    " + contentBetweenLines.toString(), "Test", Messages.getInformationIcon())
         val listOfProps = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines))
+        Messages.showMessageDialog(e.project, listOfProps.toString(), "Test", Messages.getInformationIcon())
         cleanByDeletingForDefaultOrType(e, path, Dico.regex.matchPropsType, Dico.regex.matchBracket, listOfProps, e)
     }
 
@@ -22,6 +23,7 @@ class PropsTypeCleanTask {
         val (contentBetweenLines, indexStart, indexEnd) = Utils.getContentBetweenLines(path, firstRegexMatch, secondRegexMatch, e)
         val listOfPropsToCheck = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines))
         val listOfPropsToCheckClean = listOfPropsToCheck.map { it.substringBefore(':') }
+        Messages.showMessageDialog(e.project, listOfPropsToCheckClean.toString(), "Test", Messages.getInformationIcon())
         removeIfPropsDoesNotExist(event, path, listOfProps, listOfPropsToCheckClean, indexStart, indexEnd)
     }
 
