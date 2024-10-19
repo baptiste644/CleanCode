@@ -37,13 +37,6 @@ class Utils {
             if (actualEndIndex < firstLineIndex || actualEndIndex > lines.size) {
                 throw IllegalArgumentException("L'index de fin est en dehors de la plage des lignes.")
             }
-            try {
-                Messages.showMessageDialog(e.project, "affichage de lines", "Test", Messages.getInformationIcon())
-                Messages.showMessageDialog(e.project, lines.toString(), "Test", Messages.getInformationIcon())
-                Messages.showMessageDialog(e.project, lines.subList(firstLineIndex, actualEndIndex).toString(), "Test", Messages.getInformationIcon())
-            } catch (a: Exception) {
-                Messages.showMessageDialog(e.project, a.message.toString(), "Test", Messages.getInformationIcon())
-            }
 
             // Retourne les lignes entre startIndex et actualEndIndex
             return lines.subList(firstLineIndex, actualEndIndex)
@@ -68,9 +61,12 @@ class Utils {
         fun getContentBetweenLines(path: String, firstRegexMatch: String, secondRegexMatch: String, e: AnActionEvent): Triple<List<String>, Int, Int> {
             val content = EditFileUtils.getFileContentAsList(path)
             val indexStart = getLineIndex(content, firstRegexMatch)
+            Messages.showMessageDialog(e.project, "indexStart" + indexStart.toString(), "Test", Messages.getInformationIcon())
             val contentAfter = extractContentBetweenLines(path, indexStart, -1, e)
+            Messages.showMessageDialog(e.project, "contentAfter" + contentAfter.toString(), "Test", Messages.getInformationIcon())
             val indexEnd = getLineIndex(contentAfter, secondRegexMatch) + indexStart - 1
-            Messages.showMessageDialog(e.project, "variable de getContentBetweenLine" + path+ indexStart+ indexEnd.toString(), "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, indexEnd.toString(), "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, "variable de getContentBetweenLine" + indexStart+ indexEnd.toString(), "Test", Messages.getInformationIcon())
             return Triple(extractContentBetweenLines(path, indexStart, indexEnd, e), indexStart, indexEnd)
         }
 
