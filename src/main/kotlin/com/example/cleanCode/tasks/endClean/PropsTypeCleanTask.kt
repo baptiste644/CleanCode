@@ -9,24 +9,19 @@ import com.intellij.openapi.ui.Messages
 
 class PropsTypeCleanTask {
     fun PropsTypeCleanTask(e: AnActionEvent) {
+
         val path = EditFileUtils.getCurrentFilePath(e)
         val matchLocalizedFragment = Dico.regex.matchLocalizedFragmentPart1 + Utils.getTri(e) + Dico.regex.matchLocalizedFragmentPart2
-        Messages.showMessageDialog(e.project, matchLocalizedFragment, "Test", Messages.getInformationIcon())
         val (contentBetweenLines, _, _) = Utils.getContentBetweenLines(path, matchLocalizedFragment, Dico.regex.matchArrow, e)
 
-        val listOfProps = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines).split(","))
-        Messages.showMessageDialog(e.project, listOfProps.toString(), "Test", Messages.getInformationIcon())
+        val listOfProps = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines))
         cleanByDeletingForDefaultOrType(e, path, Dico.regex.matchPropsType, Dico.regex.matchBracket, listOfProps, e)
     }
 
     private fun cleanByDeletingForDefaultOrType(event: AnActionEvent, path: String, firstRegexMatch: String, secondRegexMatch: String, listOfProps: List<String>, e: AnActionEvent) {
         val (contentBetweenLines, indexStart, indexEnd) = Utils.getContentBetweenLines(path, firstRegexMatch, secondRegexMatch, e)
-        Messages.showMessageDialog(e.project, "start:" + indexStart + ",end:" + indexEnd, "Test", Messages.getInformationIcon())
-        Messages.showMessageDialog(e.project, contentBetweenLines, "Test", Messages.getInformationIcon())
-        val listOfPropsToCheck = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines).split(","))
+        val listOfPropsToCheck = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines))
         val listOfPropsToCheckClean = listOfPropsToCheck.map { it.substringBefore(':') }
-        Messages.showMessageDialog(e.project, listOfPropsToCheck.toString(), "Test", Messages.getInformationIcon())
-        Messages.showMessageDialog(e.project, listOfPropsToCheckClean.toString(), "Test", Messages.getInformationIcon())
         removeIfPropsDoesNotExist(event, path, listOfProps, listOfPropsToCheckClean, indexStart, indexEnd)
     }
 
