@@ -6,7 +6,7 @@ class Dico {
         const val matchAnyString = "(.|\\n)*"
         const val matchLocalizedFragmentPart1 = "LocalizedFragment\\("
         const val matchLocalizedFragmentPart2 = "Dico\\)\\(\\(\\{"
-        const val matchArrow = "}\\) => "
+        const val matchArrow = "\\}\\) => "
         const val matchPropsType = ".propTypes = \\{"
         const val matchDefaultProps = ".defaultProps = \\{"
         const val matchBracket = "\\}"

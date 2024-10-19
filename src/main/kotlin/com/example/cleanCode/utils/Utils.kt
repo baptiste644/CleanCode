@@ -26,19 +26,28 @@ class Utils {
             return -1
         }
 
-        fun extractContentBetweenLines(filePath: String, firstLineIndex: Int, lastLineIndex: Int): String {
+        fun extractContentBetweenLines(filePath: String, firstLineIndex: Int, lastLineIndex: Int, e:AnActionEvent): String {
             // Lire le fichier dans une liste de lignes
             val lines = EditFileUtils.getFileContentAsList(filePath)
-
+            Messages.showMessageDialog(e.project, "firstLineIndex" + firstLineIndex.toString(), "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, "lastLineIndex" + lastLineIndex.toString(), "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, (firstLineIndex < 0).toString(), "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, "lines.size"+ lines.size.toString(), "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, (lastLineIndex -1 >= lines.size).toString(), "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, (firstLineIndex >= lastLineIndex && lastLineIndex != -1).toString(), "Test", Messages.getInformationIcon())
             // Vérifier que les indices sont valides
             if (firstLineIndex < 0 || lastLineIndex -1 >= lines.size || (firstLineIndex >= lastLineIndex && lastLineIndex != -1)) {
                 throw IllegalArgumentException("Invalid line indices")
             }
 
             if (lastLineIndex == -1) {
+                Messages.showMessageDialog(e.project, "return si lastIndex == -1", "Test", Messages.getInformationIcon())
+                Messages.showMessageDialog(e.project, (lines.subList(firstLineIndex, lines.size).joinToString("\n")), "Test", Messages.getInformationIcon())
                 return lines.subList(firstLineIndex, lines.size).joinToString("\n")
             }
             // Extraire les lignes entre firstLineIndex + 1 et lastLineIndex - 1
+            Messages.showMessageDialog(e.project, "return ", "Test", Messages.getInformationIcon())
+            Messages.showMessageDialog(e.project, (lastLineIndex -1 >= lines.size).toString(), "Test", Messages.getInformationIcon())
             return lines.subList(firstLineIndex, lastLineIndex - 1).joinToString("\n")
         }
 
@@ -60,11 +69,12 @@ class Utils {
             val content = EditFileUtils.getFileContent(path)
             val indexStart = getLineIndex(content, firstRegexMatch)
             Messages.showMessageDialog(e.project, indexStart.toString(), "Test", Messages.getInformationIcon())
-            val contentAfter = extractContentBetweenLines(path, indexStart, -1)
+            Messages.showMessageDialog(e.project, "path:" + path, "Test", Messages.getInformationIcon())
+            val contentAfter = extractContentBetweenLines(path, indexStart, -1, e)
             Messages.showMessageDialog(e.project, contentAfter, "Test", Messages.getInformationIcon())
             val indexEnd = getLineIndex(contentAfter, secondRegexMatch) + indexStart
 
-            return Triple(extractContentBetweenLines(path, indexStart, indexEnd), indexStart, indexEnd)
+            return Triple(extractContentBetweenLines(path, indexStart, indexEnd, e), indexStart, indexEnd)
         }
 
         fun getTri(e: AnActionEvent): String {
