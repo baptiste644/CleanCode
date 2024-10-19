@@ -43,7 +43,13 @@ class Utils {
 
             if (lastLineIndex == -1) {
                 Messages.showMessageDialog(e.project, "return si lastIndex == -1", "Test", Messages.getInformationIcon())
-                Messages.showMessageDialog(e.project, "juste lines:  " + lines.toString(), "Test", Messages.getInformationIcon())
+                try {
+                    Messages.showMessageDialog(e.project, "juste lines:  " + lines.toString(), "Test", Messages.getInformationIcon())
+                } catch (a: Exception) {
+                    Messages.showMessageDialog(e.project, "An error occurred: ${a.message}", "Test", Messages.getInformationIcon())
+                    Messages.showMessageDialog(e.project, a.printStackTrace().toString(), "Test", Messages.getInformationIcon())
+                }
+
 
                 Messages.showMessageDialog(e.project, (lines.subList(firstLineIndex, lines.size-1).joinToString("\n")), "Test", Messages.getInformationIcon())
                 return lines.subList(firstLineIndex, lines.size-1).joinToString("\n")
