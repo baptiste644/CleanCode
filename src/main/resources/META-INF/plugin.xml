@@ -27,4 +27,10 @@
     <extensions defaultExtensionNs="com.intellij">
 
     </extensions>
+
+    <actions>
+        <action id="com.example.cleanCode.actions.ShowPopupAction" class="com.example.cleanCode.actions.ShowPopupAction" text="SHow Popup Action">
+            <keyboard-shortcut first-keystroke="ctrl o" keymap="$default"/>
+        </action>
+    </actions>
 </idea-plugin>
