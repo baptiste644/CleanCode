@@ -14,6 +14,7 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
+    pluginName.set("Clean Code")
     version.set("2023.2.6")
     type.set("IC") // Target IDE Platform
 
