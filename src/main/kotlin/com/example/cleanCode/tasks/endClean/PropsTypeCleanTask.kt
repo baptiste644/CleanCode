@@ -21,9 +21,12 @@ class PropsTypeCleanTask {
 
     private fun cleanByDeletingForDefaultOrType(event: AnActionEvent, path: String, firstRegexMatch: String, secondRegexMatch: String, listOfProps: List<String>, e: AnActionEvent) {
         val (contentBetweenLines, indexStart, indexEnd) = Utils.getContentBetweenLines(path, firstRegexMatch, secondRegexMatch, e)
-
+        Messages.showMessageDialog(e.project, "start:" + indexStart + ",end:" + indexEnd, "Test", Messages.getInformationIcon())
+        Messages.showMessageDialog(e.project, contentBetweenLines, "Test", Messages.getInformationIcon())
         val listOfPropsToCheck = Utils.removeLineOfListIfLastIsEmpty(Utils.removeSpacesAndNewlinesAndTab(contentBetweenLines).split(","))
         val listOfPropsToCheckClean = listOfPropsToCheck.map { it.substringBefore(':') }
+        Messages.showMessageDialog(e.project, listOfPropsToCheck.toString(), "Test", Messages.getInformationIcon())
+        Messages.showMessageDialog(e.project, listOfPropsToCheckClean.toString(), "Test", Messages.getInformationIcon())
         removeIfPropsDoesNotExist(event, path, listOfProps, listOfPropsToCheckClean, indexStart, indexEnd)
     }
 
