@@ -9,8 +9,7 @@ class TestTask {
     fun testTask(e: AnActionEvent) {
         val project: Project? = e.project
 
-        val content = EditFileUtils.getPageFromView(e)
-
-        Messages.showMessageDialog(project, content, "Test", Messages.getInformationIcon())
+        Messages.showMessageDialog(project, EditFileUtils.getFileName(e).toString(), "Test", Messages.getInformationIcon())
+        Messages.showMessageDialog(project, EditFileUtils.getFileContent(EditFileUtils.getCurrentFilePath(e)).toString(), "Test", Messages.getInformationIcon())
     }
 }
