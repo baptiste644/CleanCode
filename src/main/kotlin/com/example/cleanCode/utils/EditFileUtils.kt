@@ -9,6 +9,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiFile
 import java.io.File
 import java.io.IOException
 
@@ -18,10 +20,29 @@ class EditFileUtils {
         fun getFileContent(path: String, event: AnActionEvent): String {
             var documentString = ""
             try {
+                val editor = event.getData(com.intellij.openapi.actionSystem.CommonDataKeys.EDITOR) ?: return ""
+                val psiFile: PsiFile = PsiDocumentManager.getInstance(editor.project!!).getPsiFile(editor.document)!!
                 val virtualFil: VirtualFile? = VfsUtil.findFileByIoFile(File(path), true)
-                Messages.showMessageDialog(event.project, virtualFil.toString(), "Test", Messages.getInformationIcon())
+                Messages.showMessageDialog(event.project, " contenu du fichier " + virtualFil.toString(), "Test", Messages.getInformationIcon())
+                if (psiFile != null) {
+                    // Afficher une boîte de dialogue avec le contenu du fichier
+                    Messages.showMessageDialog(
+                        event.project,
+                        psiFile.text,  // Contenu du fichier
+                        "Contenu du fichier : ${psiFile.name}",  // Titre
+                        Messages.getInformationIcon()
+                    )
+                } else {
+                    // Afficher un message d'erreur si aucun fichier n'est ouvert
+                    Messages.showMessageDialog(
+                        event.project,
+                        "Aucun fichier ouvert dans l'éditeur.",
+                        "Erreur",
+                        Messages.getErrorIcon()
+                    )
+                }
             } catch (e: Exception) {
-                Messages.showMessageDialog(event.project, e.toString(), "Test", Messages.getInformationIcon())
+                Messages.showMessageDialog(event.project, "lecture impossible" + e.toString(), "Test", Messages.getInformationIcon())
 
             }
             val virtualFile: VirtualFile? = VfsUtil.findFileByIoFile(File(path), true)
