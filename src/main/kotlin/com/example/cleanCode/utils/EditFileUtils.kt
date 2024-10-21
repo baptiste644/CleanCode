@@ -6,21 +6,32 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import java.io.File
+import java.io.IOException
 
 
 class EditFileUtils {
     companion object {
-        fun getFileContent(path: String): String {
+        fun getFileContent(path: String, event: AnActionEvent): String {
             var documentString = ""
             val virtualFile: VirtualFile? = VfsUtil.findFileByIoFile(File(path), true)
 
             if (virtualFile != null) {
                 // Récupère le document associé au fichier
                 val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
-
+                try {
+                    if (document != null) {
+                        // Obtient le contenu du fichier
+                        documentString = document.text
+                        Messages.showMessageDialog(event.project, documentString, "Test", Messages.getInformationIcon())
+                    }
+                } catch (e: IOException) {
+                    Messages.showMessageDialog(event.project, e.message, "Test", Messages.getInformationIcon())
+                }
+                Messages.showMessageDialog(event.project, document.toString(), "Test", Messages.getInformationIcon())
                 if (document != null) {
                     // Obtient le contenu du fichier
                     documentString = document.text
@@ -35,8 +46,8 @@ class EditFileUtils {
             return documentString
         }
 
-        fun getFileContentAsList(path: String): List<String> {
-            return getFileContent(path).split("\n")
+        fun getFileContentAsList(path: String, event: AnActionEvent): List<String> {
+            return getFileContent(path, event).split("\n")
         }
 
         fun addLineAtIndex(event: AnActionEvent, path: String, content: String, lineIndex: Int) {

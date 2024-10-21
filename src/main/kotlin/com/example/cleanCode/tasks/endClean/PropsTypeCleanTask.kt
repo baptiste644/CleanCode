@@ -29,7 +29,7 @@ class PropsTypeCleanTask {
             .filter { it !in listOfProps }
         if (resultList.size != 0) {
             var liste = mutableListOf<Int>()
-            var lines = EditFileUtils.getFileContentAsList(path)
+            var lines = EditFileUtils.getFileContentAsList(path, event)
             for (i in indexStartProps..indexEndProps - 1) {
                 for (indexResult in 0..resultList.size - 1) {
                     // Filtrer les lignes qui ne contiennent pas la chaîne "val"

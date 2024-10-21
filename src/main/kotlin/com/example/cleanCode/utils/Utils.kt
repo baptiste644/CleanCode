@@ -22,7 +22,7 @@ class Utils {
 
         fun extractContentBetweenLines(filePath: String, firstLineIndex: Int, lastLineIndex: Int, e:AnActionEvent): List<String> {
             // Lire le fichier dans une liste de lignes
-            val lines = EditFileUtils.getFileContentAsList(filePath)
+            val lines = EditFileUtils.getFileContentAsList(filePath, e)
 
             // Vérifie si les index sont valides
             if (firstLineIndex < 0 || firstLineIndex >= lines.size) {
@@ -58,7 +58,7 @@ class Utils {
         }
 
         fun getContentBetweenLines(path: String, firstRegexMatch: String, secondRegexMatch: String, e: AnActionEvent): Triple<List<String>, Int, Int> {
-            val content = EditFileUtils.getFileContentAsList(path)
+            val content = EditFileUtils.getFileContentAsList(path, e)
             val indexStart = getLineIndex(content, firstRegexMatch)
             val contentAfter = extractContentBetweenLines(path, indexStart, -1, e)
             val indexEnd = getLineIndex(contentAfter, secondRegexMatch) + indexStart - 1
