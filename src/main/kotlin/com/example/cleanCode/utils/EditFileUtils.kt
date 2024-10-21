@@ -17,6 +17,13 @@ class EditFileUtils {
     companion object {
         fun getFileContent(path: String, event: AnActionEvent): String {
             var documentString = ""
+            try {
+                val virtualFil: VirtualFile? = VfsUtil.findFileByIoFile(File(path), true)
+                Messages.showMessageDialog(event.project, virtualFil.toString(), "Test", Messages.getInformationIcon())
+            } catch (e: Exception) {
+                Messages.showMessageDialog(event.project, e.toString(), "Test", Messages.getInformationIcon())
+
+            }
             val virtualFile: VirtualFile? = VfsUtil.findFileByIoFile(File(path), true)
 
             if (virtualFile != null) {
