@@ -10,6 +10,6 @@ class TestTask {
         val project: Project? = e.project
 
         Messages.showMessageDialog(project, EditFileUtils.getFileName(e).toString(), "Test", Messages.getInformationIcon())
-        Messages.showMessageDialog(project, EditFileUtils.getFileContent(EditFileUtils.getCurrentFilePath(e), e).toString(), "Test", Messages.getInformationIcon())
+        Messages.showMessageDialog(project, EditFileUtils.getFileContent(EditFileUtils.getCurrentFilePath(e)), "Test", Messages.getInformationIcon())
     }
 }

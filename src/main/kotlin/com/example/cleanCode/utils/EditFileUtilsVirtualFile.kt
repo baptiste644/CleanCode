@@ -15,25 +15,41 @@ import java.io.File
 import java.io.IOException
 
 
-class EditFileUtils {
+class EditFileUtilsVirtualFile {
     companion object {
-        fun getFileContent(path: String): String {
-            val file = File(path)
+        fun getFileContent(path: String, event: AnActionEvent): String {
+            var documentString = ""
+            val virtualFile: VirtualFile? = VfsUtil.findFileByIoFile(File(path), true)
 
-            // Vérifie si le fichier existe
-            if (!file.exists()) {
+            if (virtualFile != null) {
+                // Récupère le document associé au fichier
+                val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
+                try {
+                    if (document != null) {
+                        // Obtient le contenu du fichier
+                        documentString = document.text
+                        Messages.showMessageDialog(event.project, documentString, "Test", Messages.getInformationIcon())
+                    }
+                } catch (e: IOException) {
+                    Messages.showMessageDialog(event.project, e.message, "Test", Messages.getInformationIcon())
+                }
+                Messages.showMessageDialog(event.project, document.toString(), "Test", Messages.getInformationIcon())
+                if (document != null) {
+                    // Obtient le contenu du fichier
+                    documentString = document.text
+
+                } else {
+                    throw IllegalArgumentException("Could not get the document for the file: $path")
+                }
+
+            } else {
                 throw IllegalArgumentException("File not found: $path")
             }
-
-            return try {
-                // Lit tout le contenu du fichier
-                file.readText()
-            } catch (e: IOException) {
-                throw IOException("An error occurred while reading the file: ${e.message}")
-            }
+            return documentString
         }
-        fun getFileContentAsList(path: String): List<String> {
-            return getFileContent(path).split("\n")
+
+        fun getFileContentAsList(path: String, event: AnActionEvent): List<String> {
+            return getFileContent(path, event).split("\n")
         }
 
         fun addLineAtIndex(event: AnActionEvent, path: String, content: String, lineIndex: Int) {
@@ -62,31 +78,29 @@ class EditFileUtils {
             }
         }
 
-        fun removeLineAtIndex(path: String, lineIndex: Int) {
-            val file = File(path)
+        fun removeLineAtIndex(event: AnActionEvent, path: String, lineIndex: Int) {
+            val project: Project? = event.project
+            // Récupère le fichier virtuel associé au chemin donné
+            val virtualFile: VirtualFile? = VfsUtil.findFileByIoFile(File(path), true)
 
-            // Vérifie si le fichier existe
-            if (!file.exists()) {
-                throw IllegalArgumentException("File not found: $path")
-            }
+            if (virtualFile != null) {
+                // Récupère le document associé au fichier
+                val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
 
-            try {
-                // Lis toutes les lignes du fichier dans une liste
-                val lines = file.readLines().toMutableList()
+                if (document != null) {
+                    // Exécute une action de modification qui peut être annulée
+                    WriteCommandAction.runWriteCommandAction(project) {
+                        val lineStartOffset = document.getLineStartOffset(lineIndex)
+                        val lineEndOffset = document.getLineEndOffset(lineIndex)
 
-                // Vérifie si l'index est dans les limites du fichier
-                if (lineIndex < 0 || lineIndex >= lines.size) {
-                    throw IndexOutOfBoundsException("Invalid line index: $lineIndex")
+                        // Supprime la ligne spécifiée par l'index
+                        document.deleteString(lineStartOffset, lineEndOffset + 1)
+                    }
+                } else {
+                    throw IllegalArgumentException("Could not get the document for the file: $path")
                 }
-
-                // Supprime la ligne à l'index spécifié
-                lines.removeAt(lineIndex)
-
-                // Écris de nouveau les lignes modifiées dans le fichier
-                file.writeText(lines.joinToString("\n"))
-
-            } catch (e: IOException) {
-                throw IOException("An error occurred while modifying the file: ${e.message}")
+            } else {
+                throw IllegalArgumentException("File not found: $path")
             }
         }
 
